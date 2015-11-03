@@ -1,0 +1,31 @@
+---
+- name: Copy test.txt
+  copy: src=test.txt dest=/tmp/test.txt
+
+- name: Ensure python-apt is installed
+  command: >
+    apt-get install python-apt -y -q
+    creates=/usr/share/doc/python-apt
+
+- name: Install git
+  apt: name=git update_cache=yes state=latest
+
+- name: Install htop
+  apt: name=htop update_cache=yes state=latest
+
+- name: Install mc
+  apt: name=mc update_cache=yes state=latest
+
+- name: Install nano
+  apt: name=nano update_cache=yes state=latest
+
+- name: Update the apt cache
+  apt:
+    update_cache: yes
+  tags:
+    - apt
+
+- name: Setup 8.8.8.8 dns resolver
+  lineinfile:
+    dest: /etc/resolv.conf
+    line: "nameserver 8.8.8.8"
